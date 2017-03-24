@@ -1,0 +1,22 @@
+{
+  "name": "standalone-opstool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "async": "^2.1.5",
+    "bootstrap": "^3.3.7",
+    "can": "^3.4.1",
+    "eventemitter2": "^3.0.2",
+    "jquery": "^3.1.1",
+    "lodash": "^4.17.4",
+    "steal": "^1.3.1",
+    "webix": "^4.2.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

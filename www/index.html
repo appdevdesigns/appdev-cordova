@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mobile Opstool</title>
+        
+        <!--
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        -->
+        
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+
+        <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="node_modules/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" />
+        <link href="css/index.css" rel="stylesheet" />
+    </head>
+    
+    <body>
+        
+        <!-- loading animation will be active before any scripts load -->
+        <div id="loading-animation" class="page">
+            <div class="spacer"></div>
+            <div class="spinner">
+              <div class="rect1"></div>
+              <div class="rect2"></div>
+              <div class="rect3"></div>
+              <div class="rect4"></div>
+              <div class="rect5"></div>
+            </div>        
+        </div>
+        
+        <script src="cordova.js"></script>
+        <!-- CanJS is loaded globally -->
+        <script src="node_modules/can/dist/global/can.all.js"></script>
+        <!-- StealJS loads index.js and all the rest -->
+        <script src="node_modules/steal/steal.js" main="index"></script> 
+    </body>
+</html>
