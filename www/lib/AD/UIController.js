@@ -1,7 +1,7 @@
 "use strict";
 
-import $ from 'jquery';
-import can from 'can';
+//import $ from 'jquery';
+//import can from 'can';
 
 /**
  * @class AD.classes.UIController
@@ -117,9 +117,20 @@ var UIController = can.Control.extend({
     show: function () {
         this.element.show();
     },
-
+    
     init: function ($element) {
-
+        
+        /*
+        // It seems can.js no longer accepts jQuery objects in the `element`
+        // parameter.
+        if (this.element instanceof $) {
+            this.$element = this.element;
+        } else {
+            this.$element = $(this.element);
+        }
+        
+        this._super(element, options);
+        */
     },
 
     /**

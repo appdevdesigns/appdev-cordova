@@ -1,6 +1,8 @@
 "use strict";
 
-import can from 'can';
+//import can from 'can';
+//import $ from 'jquery';
+import 'lib/AD.js';
 
 /*
 **

@@ -1,4 +1,6 @@
-import $ from 'jquery';
+"use strict";
+
+//import $ from 'jquery';
 
 export default {
     Deferred() {

@@ -1,7 +1,7 @@
-// Requires the global `AD` object
 "use strict";
 
-import can from 'can';
+//import can from 'can';
+import 'lib/AD.js';
 
 var __controllersReady = {};    // hash of the controllers that have been created
                                 // format:  { "controllerName": deferred }
@@ -48,6 +48,8 @@ var Control = {
 
         // mark this controller as ready
         AD.Control.ready(name).resolve();
+        
+        return curr[controlName];
     },
 
 

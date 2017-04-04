@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Mobile Opstool</title>
+        <title>OpsPortal</title>
         
         <!--
         <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
@@ -13,12 +13,16 @@
 
         <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link href="node_modules/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" />
+        <link href="node_modules/selectivity/styles/selectivity-jquery.min.css" rel="stylesheet" />
         <link href="css/index.css" rel="stylesheet" />
+        
+        <link href="node_modules/webix/webix.css" rel="stylesheet" />
+        <!-- <link href="node_modules/webix/skins/light.css" rel="stylesheet" /> -->
     </head>
     
     <body>
         
-        <!-- loading animation will be active before any scripts load -->
+        <!-- loading animation is pure CSS and will be active before any scripts load -->
         <div id="loading-animation" class="page">
             <div class="spacer"></div>
             <div class="spinner">
@@ -31,9 +35,14 @@
         </div>
         
         <script src="cordova.js"></script>
-        <!-- CanJS is loaded globally -->
-        <script src="node_modules/can/dist/global/can.all.js"></script>
+        
+        <!-- Libraries that are loaded globally -->
+        <script src="node_modules/jquery/dist/jquery.min.js"></script>
+        <script src="node_modules/webix/webix.js"></script>
+        <script src="node_modules/moment/min/moment.min.js"></script>
+        
         <!-- StealJS loads index.js and all the rest -->
         <script src="node_modules/steal/steal.js" main="index"></script> 
+        
     </body>
 </html>

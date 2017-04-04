@@ -57,6 +57,10 @@ server.on('loginFailed', () => {
 
 
 // Begin app
-document.addEventListener('deviceready', () => {
+if (typeof cordova != 'undefined') {
+    document.addEventListener('deviceready', () => {
+        server.connect();
+    }, false);
+} else {
     server.connect();
-}, false);
+}

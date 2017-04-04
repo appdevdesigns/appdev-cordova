@@ -7,10 +7,15 @@
  */
 "use strict";
 
-import $ from 'jquery';
+//import $ from 'jquery';
 import async from 'async';
 //import _ from 'lodash';
-//import can from 'can';
+
+// This is CanJS 2.3.15
+import can from 'can';
+import 'can/construct/super/super';
+import 'can/construct/construct';
+import 'can/model/model';
 
 import sal from 'lib/AD/sal.js';
 import config from 'lib/AD/config.js';
@@ -30,6 +35,9 @@ import UIController from 'lib/AD/UIController.js';
 import Control from 'lib/AD/control.js';
 import labelController from 'lib/AD/label.js';
 import Model from 'lib/AD/model.js';
+
+// Make CanJS global
+window.can = can;
 
 var AD = {
     sal,
@@ -71,6 +79,24 @@ var AD = {
         log: errorLog
     },
     
-    lang
+    lang,
+    
+    /**
+     * Copies the properties of `optObj` into `defObj`
+     *
+     * @param {object} defObj
+     * @param {object} optObj
+     * @return {object}
+     */
+    defaults: (defObj, optObj) => {
+        if (optObj) {
+            for (var o in optObj) {
+                defObj[o] = optObj[o];
+            }
+        }
+        return defObj;
+    }
 };
+
+// Make AD global
 window.AD = AD;

@@ -1,6 +1,6 @@
-// Requires the global `AD` object
 "use strict";
 
+import 'lib/AD.js';
 //import "lib/sails.io.js";
 
 
@@ -51,13 +51,7 @@ function context(options, cb, dfd) {
  *    The callback function to execute if the request is successful.
  * @param {Function} options.failure
  *    The callback function to execute if the request failed.
- * @param {jQuery} options.messageBox
- *    jQuery selection of the message box to display any error messages
- *    in. If not specified, then a dialog box will be used.
- * @param {String} options.showErrors
- *    "ON", "OFF", or "AUTO". Default is AUTO.
- *    Auto means errors will be shown unless a failure callback is
- *    provided.
+ * @return {Deferred}
  */
 function request(options, cb) {
     var dfd = AD.sal.Deferred();
@@ -77,11 +71,13 @@ function request(options, cb) {
     // this prevents our build process from crashing on undefined 'io'
     if (typeof io != "undefined") {
         io.socket[options.method](options.url, options.params, function (data, jwres) {
-
+            
+            /*
             console.log('AD.comm.socket.' + options.method + '() response:');
             console.log(data);
             console.log('jwres:');
             console.log(jwres);
+            */
 
             if (typeof data == 'string') {
                 data = JSON.parse(data);

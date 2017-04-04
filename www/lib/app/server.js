@@ -5,17 +5,25 @@
  *
  * Exports a singleton instance of the Server class.
  */
-// Requires the global `AD` object
 "use strict";
 
-import $ from 'jquery';
+//import $ from 'jquery';
 import async from 'async';
 import EventEmitter from 'eventemitter2';
+import 'lib/AD.js';
 
 var socketInitialized = false;
 
 class Server extends EventEmitter {
-
+    
+    constructor() {
+        super();
+        this.readyDFD = $.Deferred();
+        this.readyDFD.done(() => {
+            this.emit('sessionReady');
+        });
+    }
+    
     get() {
         return localStorage.getItem('baseURL');
     }
@@ -102,6 +110,16 @@ class Server extends EventEmitter {
                 // It will wait one tick before initializing its URL.
                 io.sails.url = baseURL;
                 socketInitialized = true;
+                
+                io.socket.on('connect', (msg) => {
+                    this.emit('socketConnected');
+                    
+                    AD.comm.socket.get({ url: '/opsportal/socket/register' })
+                        .fail(console.error)
+                        .done(() => {
+                            console.log('OpsPortal socket registered');
+                        });
+                });
             })
             .fail(console.log);
         }
@@ -118,13 +136,12 @@ class Server extends EventEmitter {
         var dfd = $.Deferred();
         var url = AD.config.getValue('siteBaseURL') + '/begin';
         
-        //AD.comm.service.get({ url })
-        //$.ajax({ url })
         AD.sal.http({ url })
         .fail((err) => {
             dfd.reject();
         })
         .done(() => {
+            this.readyDFD.resolve();
             dfd.resolve();
         });
         
@@ -155,6 +172,7 @@ class Server extends EventEmitter {
         }
         
         dfd.done(() => {
+            this.readyDFD.resolve();
             this.emit('loginDone');
         });
         dfd.fail(() => {
@@ -192,7 +210,7 @@ class Server extends EventEmitter {
         
         var tgtURL;
         var ticket;
-        var serviceURL = siteURL + '/site/login-done';
+        var serviceURL = siteURL + '/site/begin';
         var csrf = null;
         
         async.series([
@@ -248,8 +266,6 @@ class Server extends EventEmitter {
             // Use ticket to login and establish session
             (next) => {
                 serviceURL += '?ticket='+ticket;
-                //$.ajax({ url: serviceURL })
-                //AD.comm.service.get({ url: serviceURL })
                 AD.sal.http({ url: serviceURL })
                 .fail((err) => {
                     next(err);
