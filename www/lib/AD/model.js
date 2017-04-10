@@ -250,6 +250,7 @@ var Model = {
                 _Klass:curr[modelName]
             });
             
+            return curr[modelName];
         },
 
 
@@ -423,6 +424,8 @@ var Model = {
 
         var dfdReady = AD.Model.ready(name);
         dfdReady.resolve();
+        
+        return curr[modelName];
     },
 
 
