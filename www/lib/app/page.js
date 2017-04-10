@@ -1,7 +1,7 @@
 /**
  * @class Page
  * 
- * Base class for pages in the mobile framework.
+ * Base class for page controllers in the mobile framework.
  * Is an EventEmitter.
  *
  * Emits `show` event when `show()` method is called.
@@ -9,10 +9,9 @@
  */
 "use strict";
 
-import $ from 'jquery';
-import EventEmitter from 'eventemitter2';
+//import $ from 'jquery';
 //import async from 'async';
-//import _ from 'lodash';
+import EventEmitter from 'eventemitter2';
 
 export default class Page extends EventEmitter {
     /**
@@ -26,7 +25,9 @@ export default class Page extends EventEmitter {
      *      Default is no CSS.
      */
     constructor(pageID, template, css) {
-        super();
+        super({
+            wildcard: true
+        });
         
         this.template = template;
         this.css = css;
@@ -39,12 +40,11 @@ export default class Page extends EventEmitter {
         });
     }
     
+    
     /**
      * Inserts HTML and CSS into the document
      */
     render() {
-        var dfd = $.Deferred();
-        
         if (this.$element.length == 0) {
             // Create the page div if it does not exist
             this.$element = $(`<div id="${this.pageID}" class="page">`);
@@ -54,19 +54,39 @@ export default class Page extends EventEmitter {
             this.$element.addClass('page');
         }
         
-        if (this.css) {
+        this.addCSS(this.css);
+        
+        return this.addHTML(this.template)
+    }
+    
+    
+    /**
+     * Load a CSS file into the document
+     */
+    addCSS(cssFilePath) {
+        if (cssFilePath) {
             $('<link>')
                 .appendTo('head')
                 .attr({
                     type: 'text/css',
                     rel: 'stylesheet',
-                    href: this.css
+                    href: cssFilePath
                 });
         }
+    }
+    
+    
+    /**
+     * Add HTML from a template into the page element
+     * @param {string} templateFilePath
+     * @return {Deferred}
+     */
+    addHTML(templateFilePath) {
+        var dfd = $.Deferred();
         
-        if (!this.template) dfd.resolve();
+        if (!templateFilePath) dfd.resolve();
         else {
-            $.get(this.template)
+            $.get(templateFilePath)
             .fail((err) => {
                 console.log(err);
                 dfd.reject(err);
@@ -80,12 +100,14 @@ export default class Page extends EventEmitter {
         return dfd;
     }
     
+    
     /**
-     * Subclasses should override this to set up event handling on
+     * Subclasses should override this to set up event handling of
      * their page's DOM elements.
      */
     init() {
     }
+    
     
     /**
      * Hide this page
@@ -94,6 +116,7 @@ export default class Page extends EventEmitter {
         this.$element.hide();
         this.emit('hide');
     }
+    
     
     /**
      * Show this page and hide all the others.

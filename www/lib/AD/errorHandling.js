@@ -1,5 +1,6 @@
-// Requires global `AD` object
 "use strict";
+
+import 'lib/AD.js';
 
 export default function error(data, context) {
     if (data) {

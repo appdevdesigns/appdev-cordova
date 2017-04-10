@@ -1,5 +1,6 @@
-// Requires the global `AD` object
 "use strict";
+
+import 'lib/AD.js';
 
 var __siteListLanguage = null;  // the list of languages in our site:
 var __siteLanguages = null;     // hash of language.id : { language obj } 

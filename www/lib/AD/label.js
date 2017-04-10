@@ -1,5 +1,7 @@
-import $ from 'jquery';
-import can from 'can';
+"use strict";
+
+//import $ from 'jquery';
+//import can from 'can';
 
 /**
  * @class AD.controllers.Label

@@ -10,9 +10,10 @@
  */
 "use strict";
 
-import $ from 'jquery';
+//import $ from 'jquery';
 //import async from 'async';
 //import _ from 'lodash';
+
 import Page from 'lib/app/page.js';
 import server from 'lib/app/server.js';
 

@@ -1,5 +1,6 @@
-// Requires the global `AD` object
 "use strict";
+
+import 'lib/AD.js';
 
 /**
  * CSRF object for internal use only.

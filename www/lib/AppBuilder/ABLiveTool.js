@@ -511,7 +511,7 @@ export default AD.Control.extend('opstools.BuildApp.ABLiveTool', {
             });
 
         });
-
+        
         self.resize();
     },
 

@@ -6,7 +6,7 @@ import './ABPage.js';
 
 // Namespacing conventions:
 // AD.Model.extend('[application].[Model]', {static}, {instance} );  --> Object
-AD.Model.extend('opstools.BuildApp.ABApplication',
+export default AD.Model.extend('opstools.BuildApp.ABApplication',
     {
         useSockets: true
         /*
