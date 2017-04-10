@@ -23,4 +23,10 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <plugin name="cordova-plugin-whitelist" spec="1" />
+    <plugin name="cordova-plugin-statusbar" spec="~2.2.2" />
+    <feature name="StatusBar">
+        <param name="ios-package" value="CDVStatusBar" onload="true" />
+    </feature>
+    <preference name="StatusBarOverlaysWebView" value="false" />
+    <preference name="StatusBarBackgroundColor" value="#000000" />
 </widget>

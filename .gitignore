@@ -39,6 +39,7 @@ jspm_packages
 
 # Cordova
 platforms
+plugins
 
 # OS X
 .DS_Store
