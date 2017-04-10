@@ -150,6 +150,48 @@ class Server extends EventEmitter {
     
     
     /**
+     * Log the user out of the Sails server.
+     *
+     * @return {Deferred}
+     */
+    logout() {
+        this.emit('logoutStart');
+        
+        var authType = AD.config.getValue('authType') || '';
+        if (authType.toLowerCase() == 'cas') {
+            // For CAS auth, we log out of the CAS server in addition to the
+            // site server.
+            this.logoutCAS();
+        }
+        
+        //return AD.comm.service.get({ url: '/site/logout' })
+        return AD.sal.http({ url: '/site/logout' })
+            .done(() => {
+                this.emit('logoutDone');
+            })
+            .fail((err) => {
+                this.emit('logoutFailed', err);
+                console.log(err);
+            });
+    }
+    
+    
+    /**
+     * Terminate the TGT with the CAS server
+     * 
+     * @return {Deferred}
+     */
+    logoutCAS() {
+        var casURL = AD.config.getValue('casURL');
+        
+        return $.ajax({
+            url: casURL + '/cas/v1/tickets/' + this.casTGT,
+            method: 'DELETE',
+        });
+    }
+    
+    
+    /**
      * Login the user to the Sails server.
      *
      * Events: 'loginStart', 'loginDone', 'loginFailed'
@@ -208,6 +250,7 @@ class Server extends EventEmitter {
         var casURL = AD.config.getValue('casURL');
         //casURL = siteURL;
         
+        this.casTGT = '';
         var tgtURL;
         var ticket;
         var serviceURL = siteURL + '/site/begin';
@@ -239,6 +282,8 @@ class Server extends EventEmitter {
                 .fail(next)
                 .done((data, textStatus, xhr) => {
                     tgtURL = xhr.getResponseHeader('Location');
+                    // The actual TGT is at the end of the URL. Save for logout.
+                    this.casTGT = (tgtURL.match(/[^\/]+$/) || [])[0];
                     if (!tgtURL) {
                         return next(new Error('Invalid TGT from CAS server'));
                     }
