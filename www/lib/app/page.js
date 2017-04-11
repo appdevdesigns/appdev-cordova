@@ -122,7 +122,7 @@ export default class Page extends EventEmitter {
      * Show this page and hide all the others.
      */
     show() {
-        $('.page').hide();
+        $('body > div.page').hide();
         this.$element.show();
         this.emit('show');
     }

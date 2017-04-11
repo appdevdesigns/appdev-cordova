@@ -14,11 +14,10 @@
 //import _ from 'lodash';
 import Page from 'lib/app/page.js';
 import server from 'lib/app/server.js';
-const pageID = 'login-page';
 
 class LoginPage extends Page {
     constructor() {
-        super(pageID, 'lib/app/templates/login.html', 'css/login.css');
+        super('login-page', 'lib/app/templates/login.html', 'css/login.css');
     }
     
     init() {

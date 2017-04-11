@@ -17,11 +17,9 @@
 import Page from 'lib/app/page.js';
 import server from 'lib/app/server.js';
 
-const pageID = 'server-config';
-
 class ServerPage extends Page {
     constructor() {
-        super(pageID, 'lib/app/templates/server.html');
+        super('server-config', 'lib/app/templates/server.html');
     }
     
     init() {
