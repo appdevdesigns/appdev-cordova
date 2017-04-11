@@ -50,12 +50,8 @@ server.on('loginStart', () => {
 });
 server.on('loginDone', () => {
     pages.loading.hide();
-    AD.ui.reauth.end();
     navbar.showLinks();
     pages.app.show();
-    if (!pages.app.isActive) {
-        pages.app.loadData();
-    }
 });
 server.on('loginFailed', () => {
     pages.loading.hide();

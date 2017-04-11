@@ -18,10 +18,8 @@ class Server extends EventEmitter {
     
     constructor() {
         super();
-        this.readyDFD = $.Deferred();
-        this.readyDFD.done(() => {
-            this.emit('sessionReady');
-        });
+        this.userInfo = {};
+        this.makeSessionTrigger();
     }
     
     get() {
@@ -30,6 +28,29 @@ class Server extends EventEmitter {
     
     set(value) {
         localStorage.setItem('baseURL', value);
+    }
+    
+    
+    /**
+     * Create a new internal Deferred that resolves when the server session is
+     * ready.
+     *
+     * A session becomes ready when either:
+     *      - login is first completed 
+     *      - login is completed after previously logging out
+     *      - checkSession() succeeds the first time
+     *        (meaning, the app started up and found the previous session valid)
+     *
+     * It does not become ready when:
+     *      - relogin after session had timed out
+     *        (meaning, logout() was not called)
+     *
+     */
+    makeSessionTrigger() {
+        this.readyDFD = $.Deferred();
+        this.readyDFD.done(() => {
+            this.emit('sessionReady');
+        });
     }
     
     
@@ -141,11 +162,42 @@ class Server extends EventEmitter {
             dfd.reject();
         })
         .done(() => {
-            this.readyDFD.resolve();
-            dfd.resolve();
+            this.fetchUserInfo()
+            .always(() => {
+                this.readyDFD.resolve();
+                dfd.resolve();
+            });
         });
         
         return dfd;
+    }
+    
+    
+    /**
+     * Get the current user's profile information from the server.
+     * Results are stored in `this.userInfo`
+     *
+     * @return {Deferred}
+     *      Resolves with a basic object containing the user information
+     */
+    fetchUserInfo() {
+        return AD.comm.service.get({ url: '/site/user/data' })
+            .done((data) => {
+                this.userInfo = data;
+            })
+            .fail((err) => {
+                console.log('fetchUserInfo() failed', err);
+            });
+    }
+    
+    
+    /**
+     * Get the list of permission actions that the user is allowed to perform
+     *
+     * @return {Array}
+     */
+    getUserActions() {
+        return this.userInfo.actions || [];
     }
     
     
@@ -164,10 +216,10 @@ class Server extends EventEmitter {
             this.logoutCAS();
         }
         
-        //return AD.comm.service.get({ url: '/site/logout' })
         return AD.sal.http({ url: '/site/logout' })
             .done(() => {
                 this.emit('logoutDone');
+                this.makeSessionTrigger();
             })
             .fail((err) => {
                 this.emit('logoutFailed', err);
@@ -214,8 +266,15 @@ class Server extends EventEmitter {
         }
         
         dfd.done(() => {
-            this.readyDFD.resolve();
-            this.emit('loginDone');
+            // Tell AD framework it can resume server requests
+            AD.ui.reauth.end();
+            
+            this.fetchUserInfo()
+            .fail(console.log) // not fatal if this fails
+            .always(() => {
+                this.readyDFD.resolve();
+                this.emit('loginDone');
+            });
         });
         dfd.fail(() => {
             this.emit('loginFailed');
