@@ -55,6 +55,9 @@ class NavBar extends Page {
                     $li.addClass('active');
                     this.emit('click.page', this.pageID, oldPageID);
                 }
+                else if (href == 'restart') {
+                    window.location.reload();
+                }
                 else {
                     this.emit('click.' + href);
                 }
