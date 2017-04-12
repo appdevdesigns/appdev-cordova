@@ -213,7 +213,7 @@ class AppPage extends Page {
                     });
                 }
                 
-                this.apps[this.rootAppID].mainPage.$element.show();
+                this.showApp(this.rootAppID);
                 next();
             }
         
@@ -291,6 +291,9 @@ class AppPage extends Page {
             
             pageInfo.$element.show();
             pageInfo.liveTool.showPage(pageInfo.page);
+            pageInfo.liveTool.resize();
+            
+            navbar.setActivePage(pageID);
         }
     }
     

@@ -42,8 +42,6 @@ class NavBar extends Page {
             var href = ($a.attr('href') || '').replace('#', '');
             
             if (href.length > 0) {
-                this.$pageArea.find('.active').removeClass('active');
-                
                 if (href == 'app') {
                     var oldAppID = this.appID;
                     this.appID = $li.attr('app_id');
@@ -52,7 +50,6 @@ class NavBar extends Page {
                 else if (href == 'page') {
                     var oldPageID = this.pageID;
                     this.pageID = $li.attr('page_id');
-                    $li.addClass('active');
                     this.emit('click.page', this.pageID, oldPageID);
                 }
                 else if (href == 'restart') {
@@ -89,6 +86,15 @@ class NavBar extends Page {
         this.$pageArea.find('[page_id]').show();
         this.$sysMenu.find("a[href='#profile']").show();
         this.$sysMenu.find("a[href='#logout']").show();
+    }
+    
+    
+    /**
+     * Make a page link appear in the active state
+     */
+    setActivePage(pageID) {
+        this.$pageArea.find('.active').removeClass('active');
+        this.$pageArea.find(`li[page_id='${pageID}']`).addClass('active');
     }
     
     
