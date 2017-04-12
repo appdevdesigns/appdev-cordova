@@ -26,7 +26,6 @@ class AppPage extends Page {
         super('opstool-app');
         
         this.rootAppID = null;
-        this.isActive = false;
         
         // Reference object containing all the apps
         this.apps = {
@@ -51,6 +50,8 @@ class AppPage extends Page {
                 'liveTool': <ABLiveTool>,
                 '$element': <jQuery>
             },
+            <pageID2>: { ... },
+            <pageID3>: { ... },
             ...
         */
         };
@@ -80,7 +81,6 @@ class AppPage extends Page {
         // Webix wants to make <body> unscrollable.
         // Ain't nobody got time for that.
         $('body').css({ overflow: 'scroll' });
-        
     }
     
     
@@ -92,19 +92,13 @@ class AppPage extends Page {
      */
     loadData() {
         var dfd = $.Deferred();
-        var actions = [];
+        var actions = server.getUserActions();
         this.rootAppID = null;
         this.clearData();
         
         this.emit('loadingStart');
         
         async.series([
-            (next) => {
-                // get permissions
-                actions = server.getUserActions();
-                next();
-            },
-            
             (next) => {
                 ABApplication.findAll()
                 .fail(next)
@@ -236,7 +230,6 @@ class AppPage extends Page {
                 dfd.reject(err);
             }
             else {
-                this.isActive = true;
                 navbar.showLinks();
                 dfd.resolve(this.rootAppID);
             }
@@ -254,7 +247,6 @@ class AppPage extends Page {
         navbar.setApps();
         navbar.setPages();
         navbar.hideLinks();
-        this.isActive = false;
     }
     
     
@@ -299,6 +291,17 @@ class AppPage extends Page {
             
             pageInfo.$element.show();
             pageInfo.liveTool.showPage(pageInfo.page);
+        }
+    }
+    
+    
+    resize() {
+        for (var pageID in this.pages) {
+            var pageInfo = this.pages[pageID];
+            //if (pageInfo.$element.is(':visible')) { // <-- slower?
+            if (pageInfo.$element.css('display') != 'none') {
+                pageInfo.liveTool.resize();
+            }
         }
     }
     

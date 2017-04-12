@@ -56,7 +56,22 @@ export default class Page extends EventEmitter {
         
         this.addCSS(this.css);
         
+        $(window).on('resize', () => {
+            //if (this.$element.is(':visible')) { // <-- slower?
+            if (this.$element.css('display') != 'none') {
+                this.resize();
+            }
+        });
+        
         return this.addHTML(this.template)
+    }
+    
+    
+    /**
+     * Subclasses should override this if they have elements that need to be
+     * manually resized.
+     */
+    resize() {
     }
     
     
