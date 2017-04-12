@@ -502,7 +502,7 @@ var convertFindAll = function (def) {
             return function (cond, cbSuccess, cbErr) {
                 var dfd = AD.sal.Deferred();
 
-                console.log('... convertFindAll:fn(): this.useSockets:', this.useSockets);
+                //console.log('... convertFindAll:fn(): this.useSockets:', this.useSockets);
                 var comm = 'service';
                 if (this.useSockets) {
                     comm = 'socket';

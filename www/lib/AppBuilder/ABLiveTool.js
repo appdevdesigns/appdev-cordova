@@ -67,7 +67,7 @@ export default AD.Control.extend('opstools.BuildApp.ABLiveTool', {
     },
 
     initDOM: function () {
-        console.log('... creating ABLiveTool <div> ');
+        //console.log('... creating ABLiveTool <div> ');
         this.element.html('<div id="#domID#"></div>'.replace('#domID#', this.containerDomID));
     },
 
