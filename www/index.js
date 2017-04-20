@@ -79,7 +79,6 @@ server.on('logoutDone', () => {
 });
 
 
-
 //// Navbar
 // Show all navbar links with the main app page
 pages.app.on('show', () => {

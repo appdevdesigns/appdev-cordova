@@ -37,6 +37,7 @@ export default AD.Control.extend('opstools.BuildApp.ABLiveTool', {
 
         self.debounceResize = false;
         self.resizeValues = { height: 0, width: 0 };
+        self.resizeTimeout = null;
 
         self.initDOM();
         self.initModels();
@@ -451,7 +452,7 @@ export default AD.Control.extend('opstools.BuildApp.ABLiveTool', {
                     template: page.getItemTemplate(),
                     minWidth: 700,
                     autoheight: true,
-                    scroll: true
+                    scroll: 'xy'
                 };
 
                 if ($$(pageDomId)) {
@@ -604,23 +605,30 @@ export default AD.Control.extend('opstools.BuildApp.ABLiveTool', {
         // track the last set of height/width values:
         this.resizeValues.height = height;
         this.resizeValues.width = width;
-        // console.log('ABLiveTool.resize()');
+        //console.log('ABLiveTool.resize()');
 
         // this debounce method seems to cut down our resize()
         // operations to 1/3
         if (!this.debounceResize) {
 
             _this.debounceResize = true;
-
-            setTimeout(function () {
-                // console.log('ABLiveTool.debouncedResize()');
-                if (_this.resizeValues.width > 0)
+            
+            // If another resize operation was queued, cancel that now.
+            if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
+            
+            this.resizeTimeout = setTimeout(function () {
+                //console.log('ABLiveTool.debouncedResize()');
+                if (_this.resizeValues.width > 0) {
                     $$(_this.containerDomID).define('width', width);
+                }
 
-                if (_this.resizeValues.height > 0)
+                if (_this.resizeValues.height > 0) {
                     $$(_this.containerDomID).define('height', height);
+                }
 
                 $$(_this.containerDomID).resize();
+                //$$(_this.containerDomID).adjust();
+                
                 // $$(_this.activePage.domID).adjust(); // should be part of activePage.resize()
 
 
@@ -663,7 +671,7 @@ export default AD.Control.extend('opstools.BuildApp.ABLiveTool', {
                 // I went ahead and refactored ABPage to have a .resize()
                 // it is not exactly the right solution, but it is close
                 // see notes on ABPage.js .resize()
-                _this.activePage.resize();
+                _this.activePage.resize(width, height);
                 ////  OLD Logic:
                 //
                 // // Resize components

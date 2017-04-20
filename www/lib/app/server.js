@@ -3,7 +3,7 @@
  * 
  * Manages the connection to the server, including authentication.
  *
- * Exports a singleton instance of the Server class.
+ * Exports a singleton instance.
  */
 "use strict";
 
@@ -218,6 +218,7 @@ class Server extends EventEmitter {
         
         return AD.sal.http({ url: '/site/logout' })
             .done(() => {
+                this.userInfo = {};
                 this.emit('logoutDone');
                 this.makeSessionTrigger();
             })
@@ -301,7 +302,8 @@ class Server extends EventEmitter {
     
     /**
      * Used by login(). If called directly, will not emit events.
-     * RESTful CAS interface.
+     * RESTful CAS protocol.
+     * @see https://apereo.github.io/cas/5.0.x/protocol/REST-Protocol.html
      */
     loginCAS(username, password) {
         var dfd = $.Deferred();

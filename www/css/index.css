@@ -65,3 +65,8 @@ html, body {
         -webkit-transform: scaleY(1.0);
       }
     }            
+
+/* Override webix lameness */
+#opstool-app .webix_scroll_cont {
+    overflow: visible;
+}

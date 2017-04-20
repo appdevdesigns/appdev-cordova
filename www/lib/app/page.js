@@ -10,10 +10,10 @@
 "use strict";
 
 //import $ from 'jquery';
-//import async from 'async';
 import EventEmitter from 'eventemitter2';
 
 export default class Page extends EventEmitter {
+    
     /**
      * @param {string} pageID
      *      The DOM element ID of the page div
@@ -63,7 +63,7 @@ export default class Page extends EventEmitter {
             }
         });
         
-        return this.addHTML(this.template)
+        return this.addHTML(this.template);
     }
     
     

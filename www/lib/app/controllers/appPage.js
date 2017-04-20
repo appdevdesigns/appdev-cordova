@@ -21,7 +21,7 @@ import ABPage from 'lib/AppBuilder/models/ABPage.js';
 import ABObject from 'lib/AppBuilder/models/ABObject.js';
 
 class AppPage extends Page {
-
+    
     constructor() {
         super('opstool-app');
         
@@ -74,13 +74,17 @@ class AppPage extends Page {
             this.showPage(pageID);
         });
         
+        navbar.on('resize', () => {
+            this.resize();
+        });
+        
         server.on('sessionReady', () => {
             this.loadData();
         });
         
         // Webix wants to make <body> unscrollable.
         // Ain't nobody got time for that.
-        $('body').css({ overflow: 'scroll' });
+        //$('body').css({ overflow: 'scroll' });
     }
     
     
@@ -291,7 +295,11 @@ class AppPage extends Page {
             
             pageInfo.$element.show();
             pageInfo.liveTool.showPage(pageInfo.page);
-            pageInfo.liveTool.resize();
+            setTimeout(() => {
+                // There is a bug where the page will not fully display
+                // when it is first shown. Try to force it to show.
+                this.resize();
+            }, 150);
             
             navbar.setActivePage(pageID);
         }
@@ -299,11 +307,16 @@ class AppPage extends Page {
     
     
     resize() {
+        var $window = $(window);
+        //var width = $window.width();
+        var height = $window.height() - this.$element.offset().top - 28;
+        
+        //console.log(width + ' x ' + height);
         for (var pageID in this.pages) {
             var pageInfo = this.pages[pageID];
             //if (pageInfo.$element.is(':visible')) { // <-- slower?
             if (pageInfo.$element.css('display') != 'none') {
-                pageInfo.liveTool.resize();
+                pageInfo.liveTool.resize(height);
             }
         }
     }
