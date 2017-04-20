@@ -367,7 +367,8 @@ export default AD.Control.extend('opstools.BuildApp.ABLiveTool', {
                     modal: true,
                     position: "center",
                     resize: true,
-                    width: 700,
+                    minWidth: 350,
+                    maxWidth: 700,
                     height: 450,
                     css: 'ab-main-container',
                     head: {
