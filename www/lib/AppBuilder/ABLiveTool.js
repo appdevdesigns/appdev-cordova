@@ -451,7 +451,7 @@ export default AD.Control.extend('opstools.BuildApp.ABLiveTool', {
                     view: "template",
                     id: pageDomId,
                     template: page.getItemTemplate(),
-                    minWidth: 700,
+                    minWidth: 500,
                     autoheight: true,
                     scroll: 'xy'
                 };
