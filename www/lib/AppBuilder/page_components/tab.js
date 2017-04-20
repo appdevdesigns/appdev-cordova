@@ -1,5 +1,6 @@
 "use strict";
 
+import async from 'async';
 import inputValidator from 'lib/AppBuilder/utils/InputValidator.js';
 import 'lib/AppBuilder/webix_custom_components/EditTree.js';
 
