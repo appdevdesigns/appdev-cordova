@@ -62,6 +62,14 @@ class NavBar extends Page {
             
             ev.preventDefault();
         });
+        
+        this.$element.find('button.navbar-toggle')
+            .on('click', () => {
+                setTimeout(() => { 
+                    this.emit('resize'); 
+                }, 500);
+            });
+            
     }
     
     
