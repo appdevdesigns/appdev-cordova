@@ -86,30 +86,34 @@ class Server extends EventEmitter {
             })
             .done((data) => {
                 if (typeof data == 'object') {
+                    // If site base URL was not explicitly given in the config,
+                    // just use the server URL.
+                    if (!data.siteBaseURL) {
+                        data.siteBaseURL = this.get();
+                    }
+                    
                     for (var key in data) {
                         AD.config.setValue(key, data[key]);
                     }
                     
-                    if (data.siteBaseURL) {
-                        /*
-                        //// Steal.js
-                        System.baseURL = data.siteBaseURL;
-                        
-                        //// CanJS ajax
-                        can.ajax = (a, b) => {
-                            // Insert the base URL before the ajax URL param
-                            if (typeof a == 'string' && a[0] == '/') {
-                                a = data.siteBaseURL + a;
-                            }
-                            else if (typeof a == 'object' && a.url && a.url[0] == '/') {
-                                a.url = data.siteBaseURL + a.url;
-                            }
-                        };
-                        */
-                        
-                        //// socket.io
-                        this.initSocket(data.siteBaseURL);
-                    }
+                    /*
+                    //// Steal.js
+                    System.baseURL = data.siteBaseURL;
+                    
+                    //// CanJS ajax
+                    can.ajax = (a, b) => {
+                        // Insert the base URL before the ajax URL param
+                        if (typeof a == 'string' && a[0] == '/') {
+                            a = data.siteBaseURL + a;
+                        }
+                        else if (typeof a == 'object' && a.url && a.url[0] == '/') {
+                            a.url = data.siteBaseURL + a.url;
+                        }
+                    };
+                    */
+                    
+                    //// socket.io
+                    this.initSocket(data.siteBaseURL);
                 }
                 
                 dfd.resolve();
