@@ -160,18 +160,40 @@ class AppPage extends Page {
                     pageIDs.push({ id: pageID });
                 }
                 
-                ABPage.findAll({ or: pageIDs })
-                .fail(next)
-                .done((list) => {
-                    if (!list || !list[0]) next(new Error('no pages found'));
+                // Sails can't handle more than ~20 items in a findAll OR group
+                // so need to break it up into smaller batches
+                var pageBatches = [];
+                while (pageIDs.length > 0) {
+                    pageBatches.push(pageIDs.splice(0, Math.min(20, pageIDs.length)));
+                }
+                
+                var pageList = [];
+                async.each(pageBatches, (batchPageIDs, nextBatch) => {
+                    ABPage.findAll({ or: batchPageIDs })
+                    .fail(nextBatch)
+                    .done((list) => {
+                        if (!list || !list[0]) nextBatch();
+                        else {
+                            // `list` is actually a CanJS Map object.
+                            // Can't use Array.concat() on it.
+                            list.forEach((page) => {
+                                pageList.push(page);
+                            });
+                            nextBatch();
+                        }
+                    });
+                }, (err) => {
+                    if (err) next(err);
+                    else if (pageList.length < 1) {
+                        next(new Error('No pages found'));
+                    }
                     else {
-                        list.forEach((populatedPage) => {
+                        pageList.forEach((populatedPage) => {
                             populatedPage.translate && populatedPage.translate();
-                            // Replace the old shallow ABPage with the new deep
-                            // one.
+                            // Replace the old shallow ABPage with the
+                            // new deep one.
                             this.pages[populatedPage.id]['page'] = populatedPage;
                         });
-                        
                         // Replace in the app list also
                         for (var appID in this.apps) {
                             var appInfo = this.apps[appID];
@@ -182,10 +204,9 @@ class AppPage extends Page {
                                 }
                             }
                         }
-                        
                         next();
                     }
-                });                
+                });
             },
             
             (next) => {
