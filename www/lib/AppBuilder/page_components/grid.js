@@ -33,8 +33,6 @@ var gridComponent = function (application, viewId, componentId) {
     var data = {},
         events = {}; // { eventName: eventId, ..., eventNameN: eventIdN }
 
-    this.$$view = $$(viewId);
-        
     function getMaxWeight(columns) {
         if (!columns) return 0;
 
@@ -835,17 +833,9 @@ var gridComponent = function (application, viewId, componentId) {
 };
 
 gridComponent.prototype.resize = function (width, height) {
-    //console.log(`grid resize ${width} x ${height}`);
-    
-    // This doesn't seem to do anything?
-    /*
-    //this.$$view.adjust();
-    //this.$$view.define('width', width);
-    //this.$$view.define('height', height);
-    this.$$view.config.width = width;
-    this.$$view.config.height = height;
-    this.$$view.resize();
-    */
+    var $$view = $$(this.viewId);
+    $$view.define('width', width);
+    $$view.resize();
 };
 
 gridComponent.getInfo = function () {

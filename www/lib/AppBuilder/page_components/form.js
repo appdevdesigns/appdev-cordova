@@ -932,7 +932,10 @@ var formComponent = function (application, viewId, componentId) {
     };
 
     this.resize = function (width, height) {
-        $$(this.viewId).adjust();
+        var $$view = $$(this.viewId);
+        $$view.define('width', width);
+        //$$view.define('height', height);
+        $$view.resize();
     };
 
 }

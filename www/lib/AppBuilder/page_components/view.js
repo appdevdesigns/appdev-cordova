@@ -467,8 +467,11 @@ if (!data.columns) return;
         return data.isRendered === true;
     };
 
-    this.resize = function () {
-        $$(this.viewId).adjust();
+    this.resize = function (width, height) {
+        var $$view = $$(this.viewId);
+        $$view.define('width', width);
+        //$$view.define('height', height);
+        $$view.resize();
     };
 
 };
@@ -597,6 +600,8 @@ viewComponent.getPropertyView = function (componentManager) {
 };
 
 viewComponent.resize = function (height) {
+    // This is not used?
+    console.log('viewComponent resize', arguments);
     $$(componentIds.editViewLayout).define('height', height - 150);
     $$(componentIds.editViewLayout).resize();
 };
