@@ -369,7 +369,7 @@ export default AD.Control.extend('opstools.BuildApp.ABLiveTool', {
                     resize: true,
                     minWidth: 350,
                     maxWidth: 700,
-                    height: 450,
+                    minHeight: 350,
                     css: 'ab-main-container',
                     head: {
                         view: "toolbar",
@@ -451,7 +451,7 @@ export default AD.Control.extend('opstools.BuildApp.ABLiveTool', {
                     view: "template",
                     id: pageDomId,
                     template: page.getItemTemplate(),
-                    minWidth: 500,
+                    minWidth: 350,
                     autoheight: true,
                     scroll: 'xy'
                 };
