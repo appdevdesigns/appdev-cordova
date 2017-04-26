@@ -505,7 +505,7 @@ var convertFindAll = function (def) {
                 //console.log('... convertFindAll:fn(): this.useSockets:', this.useSockets);
                 var comm = 'service';
                 if (this.useSockets) {
-                    comm = 'socket';
+                    //comm = 'socket';
                 }
 
                 AD.comm[comm][verb]({ url: uri, params: cond })
