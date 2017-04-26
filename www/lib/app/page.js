@@ -12,6 +12,8 @@
 //import $ from 'jquery';
 import EventEmitter from 'eventemitter2';
 
+var currentPage = null;
+
 export default class Page extends EventEmitter {
     
     /**
@@ -72,6 +74,11 @@ export default class Page extends EventEmitter {
      * manually resized.
      */
     resize() {
+    }
+    
+    
+    static resize() {
+        currentPage && currentPage.resize();
     }
     
     
@@ -139,6 +146,8 @@ export default class Page extends EventEmitter {
     show() {
         $('body > div.page').hide();
         this.$element.show();
+        $('body').scrollTop(0);
+        currentPage = this;
         this.emit('show');
     }
 }

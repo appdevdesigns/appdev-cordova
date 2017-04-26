@@ -6,6 +6,7 @@
 
 import 'lib/AD.js';
 import server from 'lib/app/server.js';
+import Page from 'lib/app/page.js';
 
 import loadingPage from 'lib/app/controllers/loadingPage.js';
 import loginPage from 'lib/app/controllers/loginPage.js';
@@ -116,6 +117,10 @@ if (typeof cordova != 'undefined') {
     document.addEventListener('deviceready', () => {
         server.connect();
     }, false);
+    
+    document.addEventListener('orientationchange', () => {
+        Page.resize();
+    });
 } else {
     server.connect();
 }
