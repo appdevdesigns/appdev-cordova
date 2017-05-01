@@ -228,6 +228,7 @@ class AppPage extends Page {
                     // Record the first root page
                     appInfo.mainPage = appInfo.mainPage || pageInfo;
                     
+                    /*
                     pageInfo.$element = $('<div>')
                         .hide()
                         .appendTo(this.$element);
@@ -236,6 +237,7 @@ class AppPage extends Page {
                         app: app.id,
                         page: pageID,
                     });
+                    */
                 }
                 
                 this.showApp(this.rootAppID);
@@ -296,6 +298,35 @@ class AppPage extends Page {
     
     
     /**
+     *
+     */
+    startPage(pageID) {
+        var pageInfo = this.pages[pageID];
+        if (!pageInfo) {
+            console.log(new Error('Invalid pageID'));
+            return false;
+        }
+        
+        var page = pageInfo.page;
+        var appInfo = pageInfo.appLink;
+        var app = appInfo.app;
+        
+        // Skip non-root pages
+        if (page.parent) return false;
+        
+        pageInfo.$element = $('<div>')
+            .appendTo(this.$element);
+        
+        pageInfo.liveTool = new LiveTool(pageInfo.$element, {
+            app: app.id,
+            page: pageID,
+        });
+        
+        return true;
+    }
+    
+    
+    /**
      * Show a loaded ABLiveTool app on the page
      */
     showApp(appID) {
@@ -314,13 +345,17 @@ class AppPage extends Page {
             this.$element.children().hide();
             var pageInfo = this.pages[pageID];
             
-            pageInfo.$element.show();
-            pageInfo.liveTool.showPage(pageInfo.page);
-            setTimeout(() => {
-                // There is a bug where the page will not fully display
-                // when it is first shown. Try to force it to show.
-                this.resize();
-            }, 150);
+            if (pageInfo.$element) {
+                pageInfo.$element.show();
+                pageInfo.liveTool.showPage(pageInfo.page);
+                setTimeout(() => {
+                    // There is a bug where the page will not fully display
+                    // when it is first shown. Try to force it to show.
+                    this.resize();
+                }, 150);
+            } else {
+                this.startPage(pageID);
+            }
             
             navbar.setActivePage(pageID);
         }
@@ -336,7 +371,7 @@ class AppPage extends Page {
         for (var pageID in this.pages) {
             var pageInfo = this.pages[pageID];
             //if (pageInfo.$element.is(':visible')) { // <-- slower?
-            if (pageInfo.$element.css('display') != 'none') {
+            if (pageInfo.$element && pageInfo.$element.css('display') != 'none') {
                 pageInfo.liveTool.resize(height);
             }
         }
