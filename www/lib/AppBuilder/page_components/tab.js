@@ -551,6 +551,8 @@ var tabComponent = function (application, viewId, componentId) {
                 var myTabComponent = $$(_this.viewId);
                 if (myTabComponent) {
                     myTabComponent.adjust();
+                    myTabComponent.define('width', width);
+                    myTabComponent.resize();
 
                     // make sure any of our Tab Views are resized()
                     if (myTabComponent._pageTabs) {
