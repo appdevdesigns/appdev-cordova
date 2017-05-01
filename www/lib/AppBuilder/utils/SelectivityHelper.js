@@ -1,6 +1,7 @@
 "use strict";
 import 'lib/AD.js';
-import selectivity from 'selectivity';
+import $ from 'jquery'; // needed because selectivity doesn't detect the globally loaded $
+import selectivity from 'selectivity/jquery';
 
 export default {
     renderSelectivity: function (node, cssClass, readOnly) {
