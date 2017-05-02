@@ -12,7 +12,7 @@ import async from 'async';
 import EventEmitter from 'eventemitter2';
 import 'lib/AD.js';
 
-var socketInitialized = false;
+var socketInitialized = '';
 
 class Server extends EventEmitter {
     
@@ -134,7 +134,7 @@ class Server extends EventEmitter {
                 // Set the base URL immediately after sails.io.js loads.
                 // It will wait one tick before initializing its URL.
                 io.sails.url = baseURL;
-                socketInitialized = true;
+                socketInitialized = baseURL;
                 
                 io.socket.on('connect', (msg) => {
                     this.emit('socketConnected');
@@ -147,6 +147,13 @@ class Server extends EventEmitter {
                 });
             })
             .fail(console.log);
+        }
+        else if (socketInitialized != baseURL) {
+            // Since socket was already initialized to a different base URL
+            // we need to reload everything to change it.
+            // (this only happens if user manually changes the server URL from
+            //  one valid address to another)
+            window.location.reload();
         }
     }
     
