@@ -370,6 +370,7 @@ export default AD.Control.extend('opstools.BuildApp.ABLiveTool', {
                     minWidth: 350,
                     maxWidth: 700,
                     minHeight: 350,
+                    height: 'auto',
                     css: 'ab-main-container',
                     head: {
                         view: "toolbar",
