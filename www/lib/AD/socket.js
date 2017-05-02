@@ -1,6 +1,9 @@
 "use strict";
 
 import 'lib/AD.js';
+
+// Socket.io can only be loaded after server config
+// @see lib/server.js :: initSocket()
 //import "lib/sails.io.js";
 
 

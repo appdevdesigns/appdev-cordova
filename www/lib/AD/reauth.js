@@ -6,7 +6,7 @@
  * interface with a re-login widget. Rather, it emits events to allow the
  * master controller to act.
  *
- * Exports a singleton instance of Reauth.
+ * Exports a singleton instance.
  */
 "use strict";
 
